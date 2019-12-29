@@ -150,7 +150,7 @@ public class Login extends JFrame {
 			if (listado.length == 0) {
 				list.add("El directorio esta vacio ");
 			} else {
-
+				list.clear();
 				for (File f : listado) {
 					list.add(f.getName());
 					System.out.println(f.getName());
