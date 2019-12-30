@@ -40,12 +40,15 @@ public class Login extends JFrame {
 //		});
 //	}
 
-	public Login(Socket s, ObjectInputStream obin, DataInputStream dis, DataOutputStream dos) {
+	public Login(Socket c,ObjectInputStream obin, DataInputStream dis, DataOutputStream dos) {
+		setTitle("Archivos");
+		//setIconImage(new ImageIcon(getClass().getResource("/Cliente/icono.png")).getImage());
+		setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/Cliente/icono.png")));
 		setBounds(100, 100, 400, 300);
 		getContentPane().setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("Archivos");
-		lblNewLabel.setBounds(10, 11, 49, 14);
+		lblNewLabel.setBounds(10, 11, 76, 14);
 		getContentPane().add(lblNewLabel);
 		setMinimumSize(new Dimension(500,300));
 
@@ -61,9 +64,8 @@ public class Login extends JFrame {
 				// TODO Auto-generated method stub
 				int aux = list.getSelectedIndex();
 				System.out.println(aux);
-				descargar(aux, s, dis, dos);
+				descargar(aux,c, dis, dos);
 				String directorio = list.getItem(aux);
-				System.out.println("aaa");
 				System.out.println(directorio);
 				Abrir a = new Abrir(directorio);
 				a.setVisible(true);
@@ -79,7 +81,7 @@ public class Login extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				subirArchivo md = new subirArchivo(s,dis,dos);
+				subirArchivo md = new subirArchivo(dis,dos);
 				md.setVisible(true);
 			}
 		});
@@ -91,26 +93,17 @@ public class Login extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					System.out.println("list");
-					dos.writeUTF("List");
-					dos.flush();
-					System.out.println("aaaaaaaaaa");
-					listar(obin);
-				} catch (IOException e1) {
-					
-					e1.printStackTrace();
-				}
 				
+				refrescar(dos, obin);
 			}
 		});
-		btnRefresh.setBounds(371, 31, 89, 23);
+		btnRefresh.setBounds(371, 31, 103, 23);
 		getContentPane().add(btnRefresh);
 
 		listar(obin);
 	}
 
-	public void descargar(int a, Socket s, DataInputStream dis, DataOutputStream dos) {
+	public void descargar(int a,Socket c, DataInputStream dis, DataOutputStream dos) {
 
 		String directorio = list.getItem(a);
 		System.out.println("descargando " + directorio + "...");
@@ -122,23 +115,31 @@ public class Login extends JFrame {
 			System.out.println("GET" + directorio);
 			dos.writeUTF("GET" + directorio);
 			dos.flush();
-			System.out.println("aaa");
-			long tam = dis.readLong();
-			System.out.println(tam);
+
+//			long tam = dis.readLong();
+//			System.out.println(tam);
 			byte[] buf = new byte[1024 * 32];
 			int leidos;
 			System.out.println(f.getAbsolutePath() + "  " + f.length());
-			leidos = dis.read(buf);
-			long cantidad = leidos;
-			while (cantidad <= tam) {
-				
-				System.out.println("a1");
+			while ((leidos = dis.read(buf)) != -1) {
 				fos.write(buf, 0, leidos);
-				System.out.println("a2");
-				leidos = dis.read(buf);
-				cantidad=cantidad+leidos;
-				
 			}
+			if (f.exists()) {
+				System.out.println(f.getName() + " descargado");
+				System.out.println(f.getAbsolutePath() + "  " + f.length());
+			}
+
+			fos.close();
+//			long cantidad = leidos;
+//			while (cantidad <= tam) {
+//				
+//
+//				fos.write(buf, 0, leidos);
+//
+//				leidos = dis.read(buf);
+//				cantidad=cantidad+leidos;
+//				
+//			}
 //			long cantidadR =0L;
 //			while(cantidadR < tam) {
 //				int leido = dis.read();
@@ -146,15 +147,15 @@ public class Login extends JFrame {
 //				cantidadR++;
 //			}
 			
-			dos.flush();
+//			dos.flush();
 //			if (f.exists()) {
 //				System.out.println(f.getName() + " descargado");
 //				System.out.println(f.getAbsolutePath() + "  " + f.length());
 //			}
-			dos.writeUTF("List");
-			dos.flush();
+//			dos.writeUTF("List");
+//			dos.flush();
 
-			fos.close();
+//			fos.close();
 		} catch (IOException e) {
 			
 			e.printStackTrace();
@@ -182,6 +183,18 @@ public class Login extends JFrame {
 		} catch (IOException e) {
 			
 			e.printStackTrace();
+		}
+	}
+	
+	public void refrescar(DataOutputStream dos,ObjectInputStream obin) {
+		try {
+			dos.writeUTF("List");
+			dos.flush();
+
+			listar(obin);
+		} catch (IOException e1) {
+			
+			e1.printStackTrace();
 		}
 	}
 }

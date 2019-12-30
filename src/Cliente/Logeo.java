@@ -21,7 +21,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-public class logeo extends JFrame {
+public class Logeo extends JFrame {
 
 	private JPanel contentPane;
 	public JTextField txtUsuario;
@@ -50,11 +50,11 @@ public class logeo extends JFrame {
 	 * Create the frame.
 	 */
 	
-	public logeo() {
+	public Logeo() {
 		setTitle("Inicio de Sesion");
 		//setIconImage(new ImageIcon(getClass().getResource("/Cliente/icono.png")).getImage());
 		setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/Cliente/icono.png")));
-		Base b = new Base();
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 200, 301);
 		contentPane = new JPanel();

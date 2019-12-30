@@ -4,12 +4,8 @@ public class Cliente {
 	
 	
 	public static void main(String[] args) {
-
-		logeo log = new logeo();
+		Logeo log = new Logeo();
 		log.setVisible(true);
-
 	}
 			
-	
-
 }

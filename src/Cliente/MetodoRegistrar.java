@@ -14,19 +14,6 @@ import javax.sql.DataSource;
 
 public class MetodoRegistrar {
 
-	private static final String URL = getPropiedad("url");
-	private static final String USR = getPropiedad("user");
-	private static final String PWD = getPropiedad("password");
-
-	public static String getPropiedad(String clave) {
-		Properties p = new Properties();
-		try {
-			p.load(new java.io.FileInputStream("src/conexion.properties"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return (String) p.get(clave);
-	}
 
 	public int registrar(String usuario, String contrasena) throws SQLException {
 		int esta = 0;

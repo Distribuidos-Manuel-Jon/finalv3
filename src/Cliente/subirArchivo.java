@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,7 +43,7 @@ public class subirArchivo extends JFrame {
 	 */
 
 
-	public subirArchivo(Socket s, DataInputStream dis, DataOutputStream dos) {
+	public subirArchivo(DataInputStream dis, DataOutputStream dos) {
 		// initComponents();
 		setBounds(100, 100, 450, 200);
 		this.setLocationRelativeTo(this);
@@ -97,7 +98,7 @@ public class subirArchivo extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				subir(s, dis, dos);
+				subir(dis, dos);
 				dispose();
 			}
 		});
@@ -116,15 +117,24 @@ public class subirArchivo extends JFrame {
 		}
 	}
 
-	public void subir(Socket s, DataInputStream dis, DataOutputStream dos) {
+	public void subir(DataInputStream dis, DataOutputStream dos) {
 		String directorio = txtRuta.getText();
 		System.out.println("Subiendo " + directorio + "...");
 		try {
+			File f = new File(directorio);
+			FileInputStream fis = new FileInputStream(f);
 			System.out.println("PUT" + directorio);
 			dos.writeUTF("PUT" + directorio);
 			dos.flush();
 			System.out.println("Enviado al servidor");
+			byte[] buf = new byte[1024 * 32];
+			int leidos;
+			while ((leidos = fis.read(buf)) != -1) {
+				dos.write(buf, 0, leidos);
+			}
+			dos.flush();
 			
+			fis.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -16,7 +16,10 @@ public class Abrir extends JFrame{
 	
 	
 	public Abrir(String ruta) {
+		setTitle("Abrir");
+		setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/Cliente/icono.png")));
 
+		
 		getContentPane().setLayout(null);
 		setMinimumSize(new Dimension(500,300));
 		JLabel lblNewLabel = new JLabel("Deseas abrir el archivo");

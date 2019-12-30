@@ -53,6 +53,7 @@ public class Registrar extends JFrame{
 	
 	public Registrar() {
 		setTitle("Crear nuevo usuario");
+		setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/Cliente/icono.png")));
 		setMinimumSize(new Dimension(300, 280));
 		MetodoRegistrar r = new MetodoRegistrar();
 		getContentPane().setLayout(null);

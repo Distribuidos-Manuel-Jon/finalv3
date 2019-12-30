@@ -16,25 +16,12 @@ import javax.sql.DataSource;
 
 public class Base {
 
-	private static final String URL = getPropiedad("url");
-	private static final String USR = getPropiedad("user");
-	private static final String PWD = getPropiedad("password");
-
-	public static String getPropiedad(String clave) {
-		Properties p = new Properties();
-		try {
-			p.load(new java.io.FileInputStream("src/conexion.properties"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return (String) p.get(clave);
-	}
 
 	public int login(String usuario, String contrasena) throws SQLException {
 		int esta = 0;
 		Connection con = null;
 		try {
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/login?serverTimezone=UTC", "root", "trolero85");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/login?serverTimezone=UTC", "root", "0321");
 
 			Statement stm = con.createStatement();
 

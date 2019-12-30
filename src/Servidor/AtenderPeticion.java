@@ -43,7 +43,7 @@ public class AtenderPeticion implements Runnable {
 
 			System.out.println("Entrando al servidor");
 			usR = dis.readUTF();
-			System.out.println("Usuario recivido " + usR);
+			System.out.println("Usuario recibido " + usR);
 			paR = dis.readUTF();
 			System.out.println(paR);
 
@@ -72,7 +72,6 @@ public class AtenderPeticion implements Runnable {
 			comando = dis.readUTF();
 		while (!comando.equals("END")) {
 			
-			System.out.println("antes del read comando");
 			
 			System.out.println(comando);
 			
@@ -94,12 +93,12 @@ public class AtenderPeticion implements Runnable {
 						dos.writeLong(f.length());
 						
 						while ((leidos = fis.read(buff)) != -1) {
-							System.out.println("a1");
+
 							dos.write(buff, 0, leidos);
-							System.out.println("a2");
+
 						}
 						dos.flush();
-						System.out.println("flush");
+//						System.out.println("flush");
 //						long cantEnviada =0L;
 //						int leido;
 //						
@@ -111,7 +110,7 @@ public class AtenderPeticion implements Runnable {
 						
 					}
 					//comando = dis.readUTF();
-					
+
 				}
 				
 				if (comando.startsWith("PUT")) {
@@ -122,17 +121,19 @@ public class AtenderPeticion implements Runnable {
 					int aux2 = comando.lastIndexOf("\\");
 					String aux = comando.substring(aux2);
 					//System.out.println(aux);
-					File f = new File(dir);
+
 					//System.out.println(f.getAbsolutePath());
 
 					// System.out.println(usR+"\\"+dir);
-					try (FileInputStream fis = new FileInputStream(f);
+					try (
 							FileOutputStream fos = new FileOutputStream(usR + "\\" + aux)) {
 						int leidos;
-						while ((leidos = fis.read(buff)) != -1) {
+						
+						while ((leidos = dis.read(buff)) != -1) {
 							fos.write(buff, 0, leidos);
-							//System.out.println("aa");
 						}
+						fos.flush();
+
 					}
 					//comando = dis.readUTF();
 				}
@@ -142,7 +143,7 @@ public class AtenderPeticion implements Runnable {
 					listado = fich.listFiles();
 					obout.writeObject(listado);
 					obout.flush();
-					System.out.println("Objeto enviado, espearando orden");
+					System.out.println("Objeto enviado, esperando orden");
 					//comando = dis.readUTF();
 				}
 				
@@ -153,7 +154,7 @@ public class AtenderPeticion implements Runnable {
 					obout.close();
 				
 				}
-				//comando = dis.readUTF();
+				comando = dis.readUTF();
 			}
 		} catch (IOException e1) {
 			e1.printStackTrace();
