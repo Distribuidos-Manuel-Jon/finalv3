@@ -65,7 +65,8 @@ public class Login extends JFrame {
 				String directorio = list.getItem(aux);
 				System.out.println("aaa");
 				System.out.println(directorio);
-				
+				Abrir a = new Abrir(directorio);
+				a.setVisible(true);
 				
 			}
 		});

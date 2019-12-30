@@ -125,6 +125,7 @@ public class AtenderPeticion implements Runnable {
 					obout.close();
 				
 				}
+//				comando = dis.readUTF();
 //			}
 		} catch (IOException e1) {
 			e1.printStackTrace();
