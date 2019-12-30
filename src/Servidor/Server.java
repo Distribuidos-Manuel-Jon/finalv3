@@ -16,16 +16,13 @@ public class Server {
 		
 		//JOptionPane.showMessageDialog(null,"Servidor Arrancado");
 
-		try (ServerSocket server = new ServerSocket(6666);) {
+		try {ServerSocket server = new ServerSocket(6666);
 
 			while (true) {
-				try {
+				
 					Socket cliente = server.accept();
 					pool.execute(new AtenderPeticion(cliente));
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
+				
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

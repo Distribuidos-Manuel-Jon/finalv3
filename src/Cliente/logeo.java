@@ -87,23 +87,27 @@ public class logeo extends JFrame {
 				clave = new String(claveChar);
 				usuario = txtUsuario.getText();
 				boolean correcto = false;
-				try
-				{
+				try {
+				
 				Socket cliente = new Socket("localhost",6666);
 				DataInputStream dis = new DataInputStream(cliente.getInputStream());
 				DataOutputStream dos = new DataOutputStream(cliente.getOutputStream());
 						ObjectInputStream obin = new ObjectInputStream(cliente.getInputStream());
 				
 					dos.writeUTF(usuario);
+					dos.flush();
 					System.out.println(usuario);				
 					dos.writeUTF(clave);
+					dos.flush();
 					correcto = dis.readBoolean();
+					
+					
 					if(correcto) {
 						Login md = new Login(cliente,obin,dis,dos);
 						md.setVisible(true);
 						setVisible(false);
 					}else {
-						JOptionPane.showMessageDialog(null, "Usuario o contrase�a incorrecta");
+						JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrecta");
 					}
 					
 				} catch (UnknownHostException e1) {

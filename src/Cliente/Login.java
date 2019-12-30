@@ -92,12 +92,13 @@ public class Login extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
+					System.out.println("list");
 					dos.writeUTF("List");
 					dos.flush();
 					System.out.println("aaaaaaaaaa");
 					listar(obin);
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
 				}
 				
@@ -114,10 +115,10 @@ public class Login extends JFrame {
 		String directorio = list.getItem(a);
 		System.out.println("descargando " + directorio + "...");
 		try {
-			System.out.println("aaa");
+			//System.out.println("GET" + directorio);
 			dos.writeUTF("GET" + directorio);
 			dos.flush();
-			System.out.println("aaa");
+			//System.out.println("aaa");
 			File f = new File(directorio);
 			FileOutputStream fos = new FileOutputStream(f);
 			byte[] buf = new byte[1024 * 32];
@@ -133,7 +134,7 @@ public class Login extends JFrame {
 
 			fos.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -149,14 +150,14 @@ public class Login extends JFrame {
 
 				for (File f : listado) {
 					list.add(f.getName());
-					System.out.println(f.getName());
+					//System.out.println(f.getName());
 				}
 			}
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 	}

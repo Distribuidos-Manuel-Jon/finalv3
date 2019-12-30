@@ -21,6 +21,8 @@ public class AtenderPeticion implements Runnable {
 	public AtenderPeticion(Socket c) {
 		super();
 		this.cliente = c;
+		System.out.println("En la dirección: " + c.getRemoteSocketAddress());
+        System.out.println("En el puerto: " + c.getPort());
 	}
 
 	public void run() {
@@ -34,9 +36,9 @@ public class AtenderPeticion implements Runnable {
 		File[] listado;
 		Base b = new Base();
 
-		try(DataInputStream dis = new DataInputStream(cliente.getInputStream());
+		try{DataInputStream dis = new DataInputStream(cliente.getInputStream());
 				DataOutputStream dos = new DataOutputStream(cliente.getOutputStream());
-				ObjectOutputStream obout = new ObjectOutputStream(cliente.getOutputStream())) {
+				ObjectOutputStream obout = new ObjectOutputStream(cliente.getOutputStream());
 
 			System.out.println("Entrando al servidor");
 			usR = dis.readUTF();
@@ -54,7 +56,7 @@ public class AtenderPeticion implements Runnable {
 					dos.flush();
 				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 
@@ -64,9 +66,14 @@ public class AtenderPeticion implements Runnable {
 			obout.writeObject(listado);
 			obout.flush();
 			System.out.println("Objeto enviado, espearando orden");
-			comando = dis.readUTF();
+			
+			
 
-//			while (!comando.equals("END")) {
+		while (true) {
+			
+			
+			comando = dis.readUTF();
+			
 				if (comando.startsWith("GET")) {
 
 					dir = comando.substring(3);
@@ -76,7 +83,7 @@ public class AtenderPeticion implements Runnable {
 					try (FileInputStream fis = new FileInputStream(f)) {
 						// System.out.println(usR+"\\"+dir);
 						int leidos;
-						System.out.println("aa");
+						System.out.println("aa" + cliente.getLocalPort() + "  " +cliente.getLocalSocketAddress());
 						while ((leidos = fis.read(buff)) != -1) {
 							System.out.println("aa");
 							dos.write(buff, 0, leidos);
@@ -85,7 +92,7 @@ public class AtenderPeticion implements Runnable {
 						dos.flush();
 						
 					}
-//					comando = dis.readUTF();
+					//comando = dis.readUTF();
 				}
 				
 				if (comando.startsWith("PUT")) {
@@ -95,7 +102,7 @@ public class AtenderPeticion implements Runnable {
 					String aux = comando.substring(aux2);
 					//System.out.println(aux);
 					File f = new File(dir);
-					System.out.println(f.getAbsolutePath());
+					//System.out.println(f.getAbsolutePath());
 
 					// System.out.println(usR+"\\"+dir);
 					try (FileInputStream fis = new FileInputStream(f);
@@ -106,7 +113,7 @@ public class AtenderPeticion implements Runnable {
 							//System.out.println("aa");
 						}
 					}
-//					comando = dis.readUTF();
+					//comando = dis.readUTF();
 				}
 				
 				if (comando.startsWith("List")) {
@@ -115,7 +122,7 @@ public class AtenderPeticion implements Runnable {
 					obout.writeObject(listado);
 					obout.flush();
 					System.out.println("Objeto enviado, espearando orden");
-//					comando = dis.readUTF();
+					//comando = dis.readUTF();
 				}
 				
 				if (comando.startsWith("END")) {
@@ -125,8 +132,8 @@ public class AtenderPeticion implements Runnable {
 					obout.close();
 				
 				}
-//				comando = dis.readUTF();
-//			}
+				//comando = dis.readUTF();
+			}
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

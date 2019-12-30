@@ -120,7 +120,7 @@ public class subirArchivo extends JFrame {
 		String directorio = txtRuta.getText();
 		System.out.println("Subiendo " + directorio + "...");
 		try {
-			System.out.println("aaa");
+			System.out.println("PUT" + directorio);
 			dos.writeUTF("PUT" + directorio);
 			dos.flush();
 			System.out.println("Enviado al servidor");
