@@ -11,6 +11,7 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 import Cliente.Base;
 
@@ -30,7 +31,7 @@ public class AtenderPeticion implements Runnable {
 		String paR = null;
 		String comando = null;
 		String dir;
-		byte[] buff = new byte[1024 * 32];
+		
 		boolean correcto = false;
 		File fich;
 		File[] listado;
@@ -68,34 +69,54 @@ public class AtenderPeticion implements Runnable {
 			System.out.println("Objeto enviado, espearando orden");
 			
 			
-
-		while (true) {
-			
-			
 			comando = dis.readUTF();
+		while (!comando.equals("END")) {
+			
+			System.out.println("antes del read comando");
+			
+			System.out.println(comando);
 			
 				if (comando.startsWith("GET")) {
+					
+					byte[] buff = new byte[1024 * 32];
 
 					dir = comando.substring(3);
 					System.out.println("Enviando " + dir);
 					File f = new File(usR + "\\" + dir);
 					System.out.println(f.getAbsolutePath() + " " + f.length() + f.getName());
 					try (FileInputStream fis = new FileInputStream(f)) {
-						// System.out.println(usR+"\\"+dir);
+						
 						int leidos;
-						System.out.println("aa" + cliente.getLocalPort() + "  " +cliente.getLocalSocketAddress());
+						System.out.println(cliente.getLocalPort() + "  " +cliente.getLocalSocketAddress());
+						if(f.exists()) {
+							System.out.println("Existe el fich");
+						}
+						dos.writeLong(f.length());
+						
 						while ((leidos = fis.read(buff)) != -1) {
-							System.out.println("aa");
+							System.out.println("a1");
 							dos.write(buff, 0, leidos);
-							System.out.println("aa");
+							System.out.println("a2");
 						}
 						dos.flush();
+						System.out.println("flush");
+//						long cantEnviada =0L;
+//						int leido;
+//						
+//						while(cantEnviada < f.length()) {
+//							leido=fis.read();
+//							dos.write(leido);
+//							cantEnviada++;
+//						}
 						
 					}
 					//comando = dis.readUTF();
+					
 				}
 				
 				if (comando.startsWith("PUT")) {
+					
+					byte[] buff = new byte[1024 * 32];
 					dir = comando.substring(3);
 					System.out.println("Subiendo " + dir);
 					int aux2 = comando.lastIndexOf("\\");

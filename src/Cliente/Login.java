@@ -115,22 +115,44 @@ public class Login extends JFrame {
 		String directorio = list.getItem(a);
 		System.out.println("descargando " + directorio + "...");
 		try {
-			//System.out.println("GET" + directorio);
-			dos.writeUTF("GET" + directorio);
-			dos.flush();
-			//System.out.println("aaa");
+			
 			File f = new File(directorio);
 			FileOutputStream fos = new FileOutputStream(f);
+			
+			System.out.println("GET" + directorio);
+			dos.writeUTF("GET" + directorio);
+			dos.flush();
+			System.out.println("aaa");
+			long tam = dis.readLong();
+			System.out.println(tam);
 			byte[] buf = new byte[1024 * 32];
 			int leidos;
 			System.out.println(f.getAbsolutePath() + "  " + f.length());
-			while ((leidos = dis.read(buf)) != -1) {
+			leidos = dis.read(buf);
+			long cantidad = leidos;
+			while (cantidad <= tam) {
+				
+				System.out.println("a1");
 				fos.write(buf, 0, leidos);
+				System.out.println("a2");
+				leidos = dis.read(buf);
+				cantidad=cantidad+leidos;
+				
 			}
-			if (f.exists()) {
-				System.out.println(f.getName() + " descargado");
-				System.out.println(f.getAbsolutePath() + "  " + f.length());
-			}
+//			long cantidadR =0L;
+//			while(cantidadR < tam) {
+//				int leido = dis.read();
+//				fos.write(leido);
+//				cantidadR++;
+//			}
+			
+			dos.flush();
+//			if (f.exists()) {
+//				System.out.println(f.getName() + " descargado");
+//				System.out.println(f.getAbsolutePath() + "  " + f.length());
+//			}
+			dos.writeUTF("List");
+			dos.flush();
 
 			fos.close();
 		} catch (IOException e) {
@@ -143,6 +165,7 @@ public class Login extends JFrame {
 	
 	public void listar(ObjectInputStream obin) {
 		try {
+			list.clear();
 			listado = (File[]) obin.readObject();
 			if (listado.length == 0) {
 				list.add("El directorio esta vacio ");

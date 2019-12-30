@@ -92,7 +92,7 @@ public class logeo extends JFrame {
 				Socket cliente = new Socket("localhost",6666);
 				DataInputStream dis = new DataInputStream(cliente.getInputStream());
 				DataOutputStream dos = new DataOutputStream(cliente.getOutputStream());
-						ObjectInputStream obin = new ObjectInputStream(cliente.getInputStream());
+				ObjectInputStream obin = new ObjectInputStream(cliente.getInputStream());
 				
 					dos.writeUTF(usuario);
 					dos.flush();
