@@ -34,9 +34,9 @@ public class AtenderPeticion implements Runnable {
 		File[] listado;
 		Base b = new Base();
 
-		try {DataInputStream dis = new DataInputStream(cliente.getInputStream());
+		try(DataInputStream dis = new DataInputStream(cliente.getInputStream());
 				DataOutputStream dos = new DataOutputStream(cliente.getOutputStream());
-				ObjectOutputStream obout = new ObjectOutputStream(cliente.getOutputStream()); 
+				ObjectOutputStream obout = new ObjectOutputStream(cliente.getOutputStream())) {
 
 			System.out.println("Entrando al servidor");
 			usR = dis.readUTF();
@@ -66,7 +66,7 @@ public class AtenderPeticion implements Runnable {
 			System.out.println("Objeto enviado, espearando orden");
 			comando = dis.readUTF();
 
-			while (!comando.equals("END")) {
+//			while (!comando.equals("END")) {
 				if (comando.startsWith("GET")) {
 
 					dir = comando.substring(3);
@@ -76,12 +76,16 @@ public class AtenderPeticion implements Runnable {
 					try (FileInputStream fis = new FileInputStream(f)) {
 						// System.out.println(usR+"\\"+dir);
 						int leidos;
+						System.out.println("aa");
 						while ((leidos = fis.read(buff)) != -1) {
+							System.out.println("aa");
 							dos.write(buff, 0, leidos);
+							System.out.println("aa");
 						}
 						dos.flush();
+						
 					}
-					comando = dis.readUTF();
+//					comando = dis.readUTF();
 				}
 				
 				if (comando.startsWith("PUT")) {
@@ -102,7 +106,7 @@ public class AtenderPeticion implements Runnable {
 							//System.out.println("aa");
 						}
 					}
-					comando = dis.readUTF();
+//					comando = dis.readUTF();
 				}
 				
 				if (comando.startsWith("List")) {
@@ -111,7 +115,7 @@ public class AtenderPeticion implements Runnable {
 					obout.writeObject(listado);
 					obout.flush();
 					System.out.println("Objeto enviado, espearando orden");
-					comando = dis.readUTF();
+//					comando = dis.readUTF();
 				}
 				
 				if (comando.startsWith("END")) {
@@ -121,7 +125,7 @@ public class AtenderPeticion implements Runnable {
 					obout.close();
 				
 				}
-			}
+//			}
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

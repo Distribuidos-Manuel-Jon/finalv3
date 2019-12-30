@@ -14,11 +14,9 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import java.awt.Toolkit;
 
 public class Login extends JFrame {
 
@@ -45,17 +43,14 @@ public class Login extends JFrame {
 	public Login(Socket s, ObjectInputStream obin, DataInputStream dis, DataOutputStream dos) {
 		setBounds(100, 100, 400, 300);
 		getContentPane().setLayout(null);
-		
-		
 
-		setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/Cliente/icono.png")));
 		JLabel lblNewLabel = new JLabel("Archivos");
-		lblNewLabel.setBounds(10, 11, 198, 14);
+		lblNewLabel.setBounds(10, 11, 49, 14);
 		getContentPane().add(lblNewLabel);
 		setMinimumSize(new Dimension(500,300));
 
 		list = new List();
-		list.setBounds(10, 31, 352, 180);
+		list.setBounds(10, 31, 350, 161);
 		getContentPane().add(list);
 
 		JButton btnNewButton = new JButton("Descargar");
@@ -68,9 +63,9 @@ public class Login extends JFrame {
 				System.out.println(aux);
 				descargar(aux, s, dis, dos);
 				String directorio = list.getItem(aux);
+				System.out.println("aaa");
 				System.out.println(directorio);
-				Abrir a = new Abrir(directorio);
-				a.setVisible(true);
+				
 				
 			}
 		});
@@ -98,7 +93,7 @@ public class Login extends JFrame {
 				try {
 					dos.writeUTF("List");
 					dos.flush();
-					System.out.println("Volviendo a listar");
+					System.out.println("aaaaaaaaaa");
 					listar(obin);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -107,7 +102,7 @@ public class Login extends JFrame {
 				
 			}
 		});
-		btnRefresh.setBounds(366, 44, 89, 23);
+		btnRefresh.setBounds(371, 31, 89, 23);
 		getContentPane().add(btnRefresh);
 
 		listar(obin);
@@ -118,15 +113,15 @@ public class Login extends JFrame {
 		String directorio = list.getItem(a);
 		System.out.println("descargando " + directorio + "...");
 		try {
-			
+			System.out.println("aaa");
 			dos.writeUTF("GET" + directorio);
 			dos.flush();
-			
+			System.out.println("aaa");
 			File f = new File(directorio);
 			FileOutputStream fos = new FileOutputStream(f);
 			byte[] buf = new byte[1024 * 32];
 			int leidos;
-			System.out.println(f.getAbsolutePath() + "  " + f.length()+"Mb");
+			System.out.println(f.getAbsolutePath() + "  " + f.length());
 			while ((leidos = dis.read(buf)) != -1) {
 				fos.write(buf, 0, leidos);
 			}
@@ -150,7 +145,7 @@ public class Login extends JFrame {
 			if (listado.length == 0) {
 				list.add("El directorio esta vacio ");
 			} else {
-				list.clear();
+
 				for (File f : listado) {
 					list.add(f.getName());
 					System.out.println(f.getName());
