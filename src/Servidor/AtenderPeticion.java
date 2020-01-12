@@ -36,10 +36,13 @@ public class AtenderPeticion implements Runnable {
 		File fich;
 		File[] listado;
 		Base b = new Base();
-
-		try{DataInputStream dis = new DataInputStream(cliente.getInputStream());
-				DataOutputStream dos = new DataOutputStream(cliente.getOutputStream());
-				ObjectOutputStream obout = new ObjectOutputStream(cliente.getOutputStream());
+		DataInputStream dis = null;
+		DataOutputStream dos = null;
+		ObjectOutputStream obout = null;
+		
+		try{dis = new DataInputStream(cliente.getInputStream());
+				dos = new DataOutputStream(cliente.getOutputStream());
+				obout = new ObjectOutputStream(cliente.getOutputStream());
 
 			System.out.println("Entrando al servidor");
 			usR = dis.readUTF();
@@ -158,7 +161,31 @@ public class AtenderPeticion implements Runnable {
 			}
 		} catch (IOException e1) {
 			e1.printStackTrace();
+		} finally {
+			if(dis!=null) {
+				try {
+					dis.close();
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+				}
+			
+			if(dos!=null) {
+				try {
+					dos.close();
+				} catch (IOException ex1) {
+					ex1.printStackTrace();
+				}
+			} 
+			if(obout!=null) {
+				try {
+					obout.close();
+				} catch (IOException ex2) {
+					ex2.printStackTrace();
+				}
+			} 
 		}
+		
 
 	}
 
